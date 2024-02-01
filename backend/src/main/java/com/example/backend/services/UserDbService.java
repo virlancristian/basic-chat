@@ -1,7 +1,7 @@
 package com.example.backend.services;
 
 import com.example.backend.models.database.UserDbEntity;
-import com.example.backend.services.repos.UserDbRepo;
+import com.example.backend.repos.UserDbRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;

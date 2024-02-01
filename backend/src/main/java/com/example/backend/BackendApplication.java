@@ -1,15 +1,14 @@
 package com.example.backend;
 
-import com.example.backend.models.database.MessageDbEntity;
-import com.example.backend.models.database.UserDbEntity;
-import com.example.backend.services.MessageDbService;
-import com.example.backend.services.UserDbService;
+import com.example.backend.services.ImageStorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -18,11 +17,10 @@ public class BackendApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(UserDbService service1, MessageDbService service2) {
+	public CommandLineRunner demo(ImageStorageService service) {
 		return args -> {
-			List<MessageDbEntity> messages = service2.getRecentMessages("varli", "domi");
-			for(MessageDbEntity message:messages) {
-				System.out.println(message.getMessage() + " " + message.getDate() + message.getHour());
+			try {
+				BufferedImage image = ImageIO.read(new File())
 			}
 		};
 	}

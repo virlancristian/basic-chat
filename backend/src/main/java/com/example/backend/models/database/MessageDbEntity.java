@@ -9,6 +9,7 @@ public class MessageDbEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "messageid")
     private Long messageId;
+    private Long conversationId;
     private String receiver;
     private String sender;
     private String message;
@@ -17,7 +18,8 @@ public class MessageDbEntity {
 
     public MessageDbEntity() {}
 
-    public MessageDbEntity(String receiver, String sender, String message, String date, String hour) {
+    public MessageDbEntity(Long conversationId, String receiver, String sender, String message, String date, String hour) {
+        this.conversationId = conversationId;
         this.receiver = receiver;
         this.sender = sender;
         this.message = message;
@@ -25,13 +27,30 @@ public class MessageDbEntity {
         this.hour = hour;
     }
 
-    public MessageDbEntity(Long messageId, String receiver, String sender, String message, String date, String hour) {
+    public MessageDbEntity(Long messageId, Long conversationId , String receiver, String sender, String message, String date, String hour) {
+        this.conversationId = conversationId;
         this.messageId = messageId;
         this.receiver = receiver;
         this.sender = sender;
         this.message = message;
         this.date = date;
         this.hour = hour;
+    }
+
+    public Long getMessageId() {
+        return messageId;
+    }
+
+    public void setMessageId(Long messageId) {
+        this.messageId = messageId;
+    }
+
+    public Long getConversationId() {
+        return conversationId;
+    }
+
+    public void setConversationId(Long conversationId) {
+        this.conversationId = conversationId;
     }
 
     public String getReceiver() {
@@ -72,5 +91,18 @@ public class MessageDbEntity {
 
     public void setHour(String hour) {
         this.hour = hour;
+    }
+
+    @Override
+    public String toString() {
+        return "MessageDbEntity{" +
+                "messageId=" + messageId +
+                ", conversationId=" + conversationId +
+                ", receiver='" + receiver + '\'' +
+                ", sender='" + sender + '\'' +
+                ", message='" + message + '\'' +
+                ", date='" + date + '\'' +
+                ", hour='" + hour + '\'' +
+                '}';
     }
 }
