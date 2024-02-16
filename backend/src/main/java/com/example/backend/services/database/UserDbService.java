@@ -1,4 +1,4 @@
-package com.example.backend.services;
+package com.example.backend.services.database;
 
 import com.example.backend.models.database.UserDbEntity;
 import com.example.backend.repos.UserDbRepo;
@@ -20,7 +20,8 @@ public class UserDbService {
     public void addUser(UserDbEntity user) {
         try {
             repo.save(user);
-        } catch(IllegalArgumentException | OptimisticLockingFailureException error) {
+        } catch(IllegalArgumentException |
+                OptimisticLockingFailureException error) {
             System.out.println("Error in UserDbService::addUser - failed to save the user in the database:\n" + error);
         }
     }

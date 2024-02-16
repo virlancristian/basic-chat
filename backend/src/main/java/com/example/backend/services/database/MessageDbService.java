@@ -1,4 +1,4 @@
-package com.example.backend.services;
+package com.example.backend.services.database;
 
 import com.example.backend.models.database.MessageDbEntity;
 import com.example.backend.repos.MessageDbRepo;

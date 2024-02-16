@@ -1,14 +1,10 @@
 package com.example.backend;
 
-import com.example.backend.services.ImageStorageService;
+import com.example.backend.services.storage.ImageStorageService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.File;
 
 @SpringBootApplication
 public class BackendApplication {
@@ -19,9 +15,7 @@ public class BackendApplication {
 	@Bean
 	public CommandLineRunner demo(ImageStorageService service) {
 		return args -> {
-			try {
-				BufferedImage image = ImageIO.read(new File())
-			}
+			service.deleteImage("ubel.jpg");
 		};
 	}
 }
