@@ -1,10 +1,12 @@
 package com.example.backend.models.api.requests;
 
-public class NewUser {
+public class UserAuthBody {
     private String username;
     private String password;
 
-    public NewUser(String username, String password) {
+    public UserAuthBody() {}
+
+    public UserAuthBody(String username, String password) {
         this.username = username;
         this.password = password;
     }
@@ -27,7 +29,7 @@ public class NewUser {
 
     @Override
     public String toString() {
-        return "NewUser{" +
+        return "UserAuthBody{" +
                 "username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 '}';

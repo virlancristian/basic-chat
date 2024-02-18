@@ -1,4 +1,4 @@
-package com.example.backend.api.controllers.get;
+package com.example.backend.api.controllers.image;
 
 import com.example.backend.services.storage.ImageStorageService;
 import org.springframework.beans.factory.annotation.Autowired;

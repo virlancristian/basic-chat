@@ -1,7 +1,7 @@
-package com.example.backend.api.controllers.crud;
+package com.example.backend.api.controllers.user;
 
 import com.example.backend.api.common.RequestCode;
-import com.example.backend.models.api.requests.NewUser;
+import com.example.backend.models.api.requests.UserAuthBody;
 import com.example.backend.models.database.UserDbEntity;
 import com.example.backend.services.database.UserDbService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class AddUserController {
 
     @CrossOrigin
     @PutMapping("/add")
-    public ResponseEntity addUser(@RequestBody NewUser newUser) {
+    public ResponseEntity addUser(@RequestBody UserAuthBody newUser) {
         if(verifyRequest(newUser) != RequestCode.OK) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
@@ -31,7 +31,7 @@ public class AddUserController {
         return ResponseEntity.status(HttpStatus.OK).body(null);
     }
 
-    private RequestCode verifyRequest(NewUser newUser) {
+    private RequestCode verifyRequest(UserAuthBody newUser) {
         if(newUser.getUsername() == null) {
             return RequestCode.NULL_USERNAME;
         }
@@ -40,7 +40,7 @@ public class AddUserController {
             return RequestCode.NULL_PASSWORD;
         }
 
-        if(userDbService.findUserByUsername(newUser.getUsername()) != null) {
+        if(!userDbService.findUserByUsername(newUser.getUsername()).isEmpty()) {
             return RequestCode.USER_ALREADY_EXISTS;
         }
 

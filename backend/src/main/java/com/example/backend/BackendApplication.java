@@ -1,6 +1,6 @@
 package com.example.backend;
 
-import com.example.backend.services.storage.ImageStorageService;
+import com.example.backend.services.database.ConversationDbSevice;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,9 +13,9 @@ public class BackendApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(ImageStorageService service) {
+	public CommandLineRunner demo(ConversationDbSevice service) {
 		return args -> {
-			service.deleteImage("ubel.jpg");
+			System.out.println(service.getConversationByRecipients("varli", "domi"));
 		};
 	}
 }

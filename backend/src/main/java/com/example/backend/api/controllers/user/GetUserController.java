@@ -1,4 +1,4 @@
-package com.example.backend.api.controllers.get;
+package com.example.backend.api.controllers.user;
 
 import com.example.backend.models.api.response.UserDbResponse;
 import com.example.backend.models.database.UserDbEntity;

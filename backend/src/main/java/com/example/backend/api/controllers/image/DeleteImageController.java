@@ -1,4 +1,4 @@
-package com.example.backend.api.controllers.crud;
+package com.example.backend.api.controllers.image;
 
 import com.example.backend.api.common.RequestCode;
 import com.example.backend.services.storage.ImageStorageService;
