@@ -11,30 +11,89 @@ import java.util.List;
 @Repository
 public interface MessageDbRepo extends JpaRepository<MessageDbEntity, Long> {
     @Query(value = "SELECT * \n" +
-                    "FROM messages\n" +
-                    "WHERE (receiver = :user1 AND sender = :user2) OR\n" +
-                    "\t  (receiver = :user2 AND sender = :user1)\n" +
-                    "ORDER BY date DESC, hour DESC\n" +
-                    "LIMIT 100", nativeQuery = true)
-    List<MessageDbEntity> getRecentMessages(@Param("user1") String user1,
-                                            @Param("user2") String user2);
-
-    @Query(value = "SELECT sender, messageid, date, hour, message, receiver\n" +
                     "FROM (\n" +
-                    "\tSELECT *, ROW_NUMBER() OVER (PARTITION BY conversation_id ORDER BY date DESC, hour DESC) AS row_num\n" +
-                    "\tFROM messages\n" +
-                    "\tWHERE receiver = 'domi' OR sender = 'domi'\n" +
+                    "\tSELECT *, ROW_NUMBER() OVER (PARTITION BY conversationId ORDER BY date DESC, hour DESC) AS row_num\n" +
+                    "    FROM messages\n" +
                     ") A\n" +
-                    "WHERE row_num = 1\n" +
+                    "WHERE row_num = 1 AND (sender = :recipient OR receiver = :recipient)\n" +
                     "ORDER BY date DESC, hour DESC\n" +
-                    "LIMIT 10;\n", nativeQuery = true)
-    List<MessageDbEntity> getUserInbox(@Param("receiver") String receiver);
+                    "LIMIT 10;", nativeQuery = true)
+    List<MessageDbEntity> getUserInbox(@Param("recipient") String recipient);
 
-    @Query(value = "SELECT * FROM messages" +
-                    "WHERE receiver = :receiver AND " +
-                            "sender = :sender AND " +
-                            "message LIKE %:message%", nativeQuery = true)
-    List<MessageDbEntity> getMessagesContaining(@Param("receiver") String receiver,
-                                                @Param("sender") String sender,
-                                                @Param("message") String requiredWords);
+    @Query(value = "SELECT *\n" +
+                    "FROM messages\n" +
+                    "WHERE conversationId = :conversation_id\n" +
+                    "ORDER BY date DESC, HOUR desc\n" +
+                    "LIMIT 100;", nativeQuery = true)
+    List<MessageDbEntity> getRecentMessagesById(@Param("conversation_id") Long id);
+
+    @Query(value = "SELECT * \n" +
+                    "FROM messages\n" +
+                    "WHERE (receiver = :user1 AND sender = :user2) OR (receiver = :user2 AND sender = :user1)\n" +
+                    "ORDER BY date DESC, hour DESC\n" +
+                    "LIMIT 100;", nativeQuery = true)
+    List<MessageDbEntity> getRecentMessagesByRecipients(@Param("user1") String user1,
+                                                        @Param("user2") String user2);
+    @Query(value = "SELECT *\n" +
+                    "FROM messages\n" +
+                    "WHERE conversationId = :conversation_id AND TIMESTAMP(CONCAT(date, ' ',hour)) < :date\n" +
+                    "ORDER BY date DESC, hour DESC\n" +
+                    "LIMIT 100;", nativeQuery = true)
+    List<MessageDbEntity> getMessagesAfterDateById(@Param("conversation_id") Long conversationId,
+                                                   @Param("date") String date);
+
+    @Query(value = "SELECT * \n" +
+                    "FROM messages\n" +
+                    "WHERE ((sender = :user1 AND receiver = :user2) OR (sender = :user2 AND receiver = :user1))\n" +
+                    "\t\tAND TIMESTAMP(CONCAT(date, ' ',hour)) < :date\n" +
+                    "ORDER BY date DESC, hour DESC\n" +
+                    "LIMIT 100;", nativeQuery = true)
+    List<MessageDbEntity> getMessagesAfterDateByRecipients(@Param("user1") String user1,
+                                                           @Param("user2") String user2,
+                                                           @Param("date") String date);
+
+    @Query(value = "SELECT * \n" +
+                    "FROM messages\n" +
+                    "WHERE conversationId = :conversation_id\n" +
+                    "ORDER BY date DESC, hour DESC\n" +
+                    "LIMIT 1;", nativeQuery = true)
+    MessageDbEntity getMostRecentMessageById(@Param("conversation_id") Long conversationId);
+
+    @Query(value = "SELECT *\n" +
+                    "FROM messages\n" +
+                    "WHERE (sender = :user1 AND receiver = :user2) OR (sender = :user2 AND receiver = :user1)\n" +
+                    "ORDER BY date DESC, hour DESC\n" +
+                    "LIMIT 1;", nativeQuery = true)
+    MessageDbEntity getMostRecentMessageByRecipient(@Param("user1") String user1,
+                                                    @Param("user2") String user2);
+
+    @Query(value = "SELECT * \n" +
+                    "FROM messages\n" +
+                    "WHERE sender = :sender AND\n" +
+                    "\t  receiver = :receiver AND\n" +
+                    "      message = :message AND\n" +
+                    "      date = :date AND\n" +
+                    "      hour = :hour", nativeQuery = true)
+    MessageDbEntity getSpecificMessage(@Param("sender") String sender,
+                                       @Param("receiver") String receiver,
+                                       @Param("message") String message,
+                                       @Param("date") String date,
+                                       @Param("hour") String hour);
+
+    @Query(value = "SELECT * \n" +
+                    "FROM messages\n" +
+                    "WHERE conversationId = :conversation_id AND\n" +
+                    "\t\tmessage LIKE :message\n" +
+                    "ORDER BY date DESC, hour DESC;", nativeQuery = true)
+    List<MessageDbEntity> getMessageAlikeById(@Param("conversation_id") Long conversationId,
+                                              @Param("message") String message);
+
+    @Query(value = "SELECT * \n" +
+                    "FROM messages\n" +
+                    "WHERE ((sender = :user1 AND receiver = :user2) OR (sender = :user2 AND receiver = :user1)) AND\n" +
+                    "\t\tmessage LIKE :message\n" +
+                    "ORDER BY date DESC, hour DESC;", nativeQuery = true)
+    List<MessageDbEntity> getMessageAlikeByRecipients(@Param("user1") String user1,
+                                                      @Param("user2") String user2,
+                                                      @Param("message") String message);
 }

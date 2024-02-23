@@ -1,6 +1,7 @@
 package com.example.backend;
 
 import com.example.backend.services.database.ConversationDbSevice;
+import com.example.backend.services.database.MessageDbService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,9 +14,10 @@ public class BackendApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(ConversationDbSevice service) {
+	public CommandLineRunner demo(MessageDbService service) {
 		return args -> {
-			System.out.println(service.getConversationByRecipients("varli", "domi"));
+			System.out.println(service.getMessageAlikeById(2L, "%bomb%"));
+			System.out.println(service.getMessageAlikeByRecipients("varli", "domi", "%hello%"));
 		};
 	}
 }
