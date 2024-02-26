@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/conversation")
+@RequestMapping("/api/user")
 public class GetConversationListController {
     private ConversationDbSevice conversationDbSevice;
     private UserDbService userDbService;
@@ -24,8 +24,8 @@ public class GetConversationListController {
     }
 
     @CrossOrigin
-    @GetMapping("/list/get")
-    public ResponseEntity<List<ConversationDbEntity>> getConversationList(@RequestParam("username") String username) {
+    @GetMapping("/{username}/conversations/get")
+    public ResponseEntity<List<ConversationDbEntity>> getConversationList(@PathVariable String username) {
         if(verifyRequest(username) != RequestCode.OK) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
