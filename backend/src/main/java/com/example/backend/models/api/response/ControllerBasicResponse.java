@@ -5,14 +5,14 @@ import com.example.backend.api.common.RequestCode;
 import java.util.List;
 
 public class ControllerBasicResponse {
-    private static final String[] acceptedStatusMessage = {"SUCCESS", "ERROR"};
-    private static final List<String> ACCEPTED_STATUS_MESSAGE = List.of(acceptedStatusMessage);
+    private static final String[] acceptedStatus = {"SUCCESS", "ERROR"};
+    private static final List<String> ACCEPTED_STATUS = List.of(acceptedStatus);
     private String status;
-    private RequestCode response;
+    private RequestCode requestValidationMessage;
 
     public ControllerBasicResponse(String status, RequestCode response) {
         this.status = status;
-        this.response = response;
+        this.requestValidationMessage = response;
     }
 
     public String getStatus() {
@@ -20,16 +20,16 @@ public class ControllerBasicResponse {
     }
 
     public void setStatus(String status) {
-        if(ACCEPTED_STATUS_MESSAGE.contains(status)) {
+        if(ACCEPTED_STATUS.contains(status)) {
             this.status = status;
         }
     }
 
-    public RequestCode getResponse() {
-        return response;
+    public RequestCode getRequestValidationMessage() {
+        return requestValidationMessage;
     }
 
-    public void setResponse(RequestCode response) {
-        this.response = response;
+    public void setRequestValidationMessage(RequestCode requestValidationMessage) {
+        this.requestValidationMessage = requestValidationMessage;
     }
 }

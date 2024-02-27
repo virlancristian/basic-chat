@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "sent_images")
-public class SentImageDbEntity {
+public class SentImageDbEntity extends MessageDbEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "image_id")
@@ -16,17 +16,25 @@ public class SentImageDbEntity {
     private String url;
     private String receiver;
     private String sender;
+    private String date;
+    private String hour;
 
-    public SentImageDbEntity() {}
+    public SentImageDbEntity() {
+        super(0);
+    }
 
-    public SentImageDbEntity(Long conversationId, String url, String receiver, String sender) {
+    public SentImageDbEntity(Long conversationId, String url, String receiver, String sender, String date, String hour) {
+        super(2);
         this.conversationId = conversationId;
         this.url = url;
         this.receiver = receiver;
         this.sender = sender;
+        this.date = date;
+        this.hour = hour;
     }
 
     public SentImageDbEntity(Long imageId, Long conversationId, String url, String receiver, String sender) {
+        super(2);
         this.imageId = imageId;
         this.conversationId = conversationId;
         this.url = url;

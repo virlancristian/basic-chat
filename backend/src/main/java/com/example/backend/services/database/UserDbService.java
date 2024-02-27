@@ -50,7 +50,7 @@ public class UserDbService {
         return repo.findUserById(id);
     }
 
-    public List<UserDbEntity> findUserByUsername(String username) {
+    public UserDbEntity findUserByUsername(String username) {
         return repo.findUserByUsername(username);
     }
 }

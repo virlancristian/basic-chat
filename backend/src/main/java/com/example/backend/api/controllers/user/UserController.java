@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -24,9 +26,9 @@ public class UserController {
     @CrossOrigin
     @GetMapping("/{username}")
     public ResponseEntity<UserDbResponse> getUser(@PathVariable String username) {
-        UserDbEntity user = userDbService.findUserByUsername(username).get(0);
+        UserDbEntity user = userDbService.findUserByUsername(username);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new UserDbResponse(user.getUserID(), user.getUsername()));
+        return ResponseEntity.status(HttpStatus.OK).body(user != null ? new UserDbResponse(user.getUserID(), user.getUsername()) : null);
     }
 
     @CrossOrigin
@@ -56,7 +58,7 @@ public class UserController {
     }
 
     private RequestCode verifyAddRequest(UserAuthBody userEntity) {
-        if(!userDbService.findUserByUsername(userEntity.getUsername()).isEmpty()) {
+        if(userDbService.findUserByUsername(userEntity.getUsername()) == null) {
             return RequestCode.USER_ALREADY_EXISTS;
         }
 
@@ -64,13 +66,13 @@ public class UserController {
     }
 
     private RequestCode verifyLoginRequest(UserAuthBody userEntity) {
-        UserDbEntity requestedUser = userDbService.findUserByUsername(userEntity.getUsername()).get(0);
+        UserDbEntity matchingUser = userDbService.findUserByUsername(userEntity.getUsername());
 
-        if(requestedUser == null) {
+        if(matchingUser == null) {
             return RequestCode.USER_NOT_FOUND;
         }
 
-        if(!requestedUser.getPassword().equals(userEntity.getPassword())) {
+        if(!matchingUser.getPassword().equals(userEntity.getPassword())) {
             return RequestCode.WRONG_PASSWORD;
         }
 

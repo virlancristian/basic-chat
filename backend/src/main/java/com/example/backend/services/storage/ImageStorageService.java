@@ -19,8 +19,16 @@ public class ImageStorageService {
         }
     }
 
-    public boolean saveImage(BufferedImage image, String imageName, String imageFormat) {
-        File imageLocation = new File(STORAGE_DIRECTORY + "/" + imageName + "." + imageFormat);
+    public boolean saveImage(BufferedImage image, String directory, String imageName, String imageFormat) {
+        File directoryLocation = new File(STORAGE_DIRECTORY + "/" + directory);
+        File imageLocation = new File(STORAGE_DIRECTORY
+                                        + "/"
+                                        + ((directory != null && !directory.isEmpty()) ? directory + "/" : "")
+                                        + imageName + "." + imageFormat);
+
+        if(!directoryLocation.exists()) {
+            directoryLocation.mkdir();
+        }
 
         try {
             ImageIO.write(image, imageFormat, imageLocation);
@@ -32,11 +40,14 @@ public class ImageStorageService {
         return true;
     }
 
-    public BufferedImage getImage(String imageName) {
+    public BufferedImage getImage(String directory, String imageName) {
         BufferedImage image = null;
 
         try {
-            image = ImageIO.read(new File(STORAGE_DIRECTORY + "/" + imageName));
+            image = ImageIO.read(new File(STORAGE_DIRECTORY
+                                            + "/"
+                                            + ((directory != null && !directory.isEmpty()) ? directory + "/" : "")
+                                            + imageName));
         } catch(IOException error) {
             System.out.println("Error in ImageStorageService::getImage - Unable to read image " + imageName +":\n" + error);
         }
@@ -44,8 +55,11 @@ public class ImageStorageService {
         return image;
     }
 
-    public boolean deleteImage(String imageName) {
-        File image = new File(STORAGE_DIRECTORY + "/" + imageName);
+    public boolean deleteImage(String directory, String imageName) {
+        File image = new File(STORAGE_DIRECTORY
+                                + "/"
+                                + ((directory != null && !directory.isEmpty()) ? directory + "/" : "")
+                                + imageName);
 
         try {
             image.delete();
