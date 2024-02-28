@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -65,7 +66,10 @@ public class MessageController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(messageDbService.getRecentMessagesById(id));
+        return ResponseEntity.status(HttpStatus.OK).body(mergeMessages(
+                messageDbService.getRecentMessagesById(id),
+                sentImageDbService.getRecentMessagesById(id)
+        ));
     }
 
     @CrossOrigin
@@ -161,5 +165,57 @@ public class MessageController {
         }
 
         return RequestCode.OK;
+    }
+
+    private List<MessageDbEntity> mergeMessages(List<TextMessageDbEntity> textMessages,
+                                                List<SentImageDbEntity> images) {
+        List<MessageDbEntity> messages = new ArrayList<>();
+        TextMessageDbEntity[] textMessagesArray = new TextMessageDbEntity[textMessages.size()];
+        SentImageDbEntity[] imagesArray = new SentImageDbEntity[images.size()];
+        int i = 0, j = 0;
+        int m = textMessages.size();
+        int n = images.size();
+
+        textMessagesArray = textMessages.toArray(textMessagesArray);
+        imagesArray = images.toArray(imagesArray);
+
+        while(i < m || j < n) {
+            if(i == m) {
+                while(j < n) {
+                    imagesArray[j].setContentType(2);
+                    messages.add(imagesArray[j]);
+                    j++;
+                }
+
+                break;
+            }
+
+            if(j == n) {
+                while(i < m) {
+                    textMessagesArray[i].setContentType(1);
+                    messages.add(textMessagesArray[i]);
+                    i++;
+                }
+
+                break;
+            }
+
+            if(textMessagesArray[i]
+                    .getDate()
+                    .concat(" " + textMessagesArray[i].getHour())
+                    .compareTo(imagesArray[j].getDate()
+                            .concat(" " + imagesArray[j].getHour())) < 0) {
+                textMessagesArray[i].setContentType(1);
+                messages.add(textMessagesArray[i]);
+                i++;
+            } else {
+                imagesArray[j].setContentType(2);
+                messages.add(imagesArray[j]);
+                j++;
+            }
+
+        }
+
+        return messages;
     }
 }

@@ -82,6 +82,22 @@ public class SentImageDbEntity extends MessageDbEntity{
         this.sender = sender;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getHour() {
+        return hour;
+    }
+
+    public void setHour(String hour) {
+        this.hour = hour;
+    }
+
     @Override
     public String toString() {
         return "SentImageDbEntity{" +
@@ -90,6 +106,8 @@ public class SentImageDbEntity extends MessageDbEntity{
                 ", url='" + url + '\'' +
                 ", receiver='" + receiver + '\'' +
                 ", sender='" + sender + '\'' +
+                ", date='" + date + '\'' +
+                ", hour='" + hour + '\'' +
                 '}';
     }
 }

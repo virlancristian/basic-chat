@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class SentImageDbService {
     private SentImageDbRepo repo;
@@ -45,5 +47,9 @@ public class SentImageDbService {
                                               String date,
                                               String hour) {
         return repo.getSpecificImage(sender, receiver, url, date, hour);
+    }
+
+    public List<SentImageDbEntity> getRecentMessagesById(Long conversationId) {
+        return repo.getRecentImagesById(conversationId);
     }
 }

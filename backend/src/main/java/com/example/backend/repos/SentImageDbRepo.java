@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 public interface SentImageDbRepo extends JpaRepository<SentImageDbEntity, Long> {
     @Query(value = "SELECT COUNT(image_id)\n" +
                     "FROM sent_images\n" +
@@ -29,4 +31,10 @@ public interface SentImageDbRepo extends JpaRepository<SentImageDbEntity, Long> 
                                        @Param("url") String url,
                                        @Param("date") String date,
                                        @Param("hour") String hour);
+
+    @Query(value = "SELECT * \n" +
+                    "FROM sent_images\n" +
+                    "WHERE conversation_id = :id\n" +
+                    "ORDER BY date DESC, hour DESC;", nativeQuery = true)
+    List<SentImageDbEntity> getRecentImagesById(@Param("id") Long id);
 }
