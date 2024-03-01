@@ -27,7 +27,7 @@ public class ConversationController {
     public ConversationController(ConversationDbSevice conversationDbSevice,
                                   @Value("${microservice.user.endpoint}") String userMicroEndpoint) {
         this.conversationDbSevice = conversationDbSevice;
-        microServiceInvoker = new RestTemplate();
+        this.microServiceInvoker = new RestTemplate();
         USER_MICROSERVICE_API_ENDPOINT = userMicroEndpoint;
     }
 

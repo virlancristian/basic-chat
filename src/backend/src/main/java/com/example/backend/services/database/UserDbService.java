@@ -26,14 +26,6 @@ public class UserDbService {
         }
     }
 
-    public void updateUser(UserDbEntity user) {
-        try {
-            repo.save(user);
-        } catch(IllegalArgumentException | OptimisticLockingFailureException error) {
-            System.out.println("Error in UserDbService::updateUser - failed to update the user in the database:\n" + error);
-        }
-    }
-
     public void deleteUser(UserDbEntity user) {
         try {
             repo.delete(user);

@@ -58,7 +58,18 @@ public class UserController {
     }
 
     private RequestCode verifyAddRequest(UserAuthBody userEntity) {
-        if(userDbService.findUserByUsername(userEntity.getUsername()) == null) {
+        String username = userEntity.getUsername();
+        String password = userEntity.getPassword();
+
+        if(username == null || username.isEmpty()) {
+            return RequestCode.NULL_USERNAME;
+        }
+
+        if(password == null || password.isEmpty()) {
+            return RequestCode.NULL_PASSWORD;
+        }
+
+        if(userDbService.findUserByUsername(userEntity.getUsername()) != null) {
             return RequestCode.USER_ALREADY_EXISTS;
         }
 

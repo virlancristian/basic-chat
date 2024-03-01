@@ -8,11 +8,11 @@ public class ControllerBasicResponse {
     private static final String[] acceptedStatus = {"SUCCESS", "ERROR"};
     private static final List<String> ACCEPTED_STATUS = List.of(acceptedStatus);
     private String status;
-    private RequestCode requestValidationMessage;
+    private RequestCode validationMessage;
 
     public ControllerBasicResponse(String status, RequestCode response) {
         this.status = status;
-        this.requestValidationMessage = response;
+        this.validationMessage = response;
     }
 
     public String getStatus() {
@@ -25,11 +25,11 @@ public class ControllerBasicResponse {
         }
     }
 
-    public RequestCode getRequestValidationMessage() {
-        return requestValidationMessage;
+    public RequestCode getValidationMessage() {
+        return validationMessage;
     }
 
-    public void setRequestValidationMessage(RequestCode requestValidationMessage) {
-        this.requestValidationMessage = requestValidationMessage;
+    public void setValidationMessage(RequestCode validationMessage) {
+        this.validationMessage = validationMessage;
     }
 }
