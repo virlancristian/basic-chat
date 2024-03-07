@@ -59,6 +59,8 @@ public class SentImageDbService {
     }
 
     public SentImageDbEntity getMostRecentMessageById(Long conversationId) {
-        return repo.getMostRecentMessageById(conversationId);
+        SentImageDbEntity image = repo.getMostRecentMessageById(conversationId);
+
+        return image != null ? image : new SentImageDbEntity(conversationId, "", "", "", "", "");
     }
 }

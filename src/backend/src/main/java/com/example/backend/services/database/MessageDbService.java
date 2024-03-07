@@ -68,7 +68,9 @@ public class MessageDbService {
     }
 
     public TextMessageDbEntity getMostRecentMessageById(Long id) {
-        return repo.getMostRecentMessageById(id);
+        TextMessageDbEntity message = repo.getMostRecentMessageById(id);
+
+        return message != null ? message : new TextMessageDbEntity(id, "", "", "", "", "");
     }
 
     public TextMessageDbEntity getMostRecentMessageByRecipients(String user1, String user2) {
