@@ -1,6 +1,6 @@
 import React from "react";
 
-import CreateAccountForm from "../components/create-account-form";
+import CreateAccountForm from "../components/create-account/create-account-form";
 import '../css/create-account.css';
 
 export default function CreateAccount() {

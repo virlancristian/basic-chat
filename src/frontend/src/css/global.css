@@ -7,3 +7,8 @@ html, body, #root {
     font-family: 'Antipasta';
     src: url(../../assets/fonts/AntipastoPro.ttf);
 }
+
+@font-face {
+    font-family: 'Lato';
+    src: url(../../assets/fonts/Lato.ttf);
+}
