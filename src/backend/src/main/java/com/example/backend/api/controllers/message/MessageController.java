@@ -262,12 +262,17 @@ public class MessageController {
         TextMessageDbEntity recentTextMessage = messageDbService.getMostRecentMessageById(id);
         SentImageDbEntity recentImageMessage = sentImageDbService.getMostRecentMessageById(id);
 
+        if((recentTextMessage == null && recentImageMessage == null)
+                || (recentTextMessage.getMessageId() == 0 && recentImageMessage.getImageId() == 0)) {
+            return new ArrayList<>();
+        }
+
         if(recentTextMessage
                 .getDate()
                 .concat(" " + recentTextMessage.getHour())
                 .compareTo(recentImageMessage
                                             .getDate()
-                                            .concat(" " + recentImageMessage.getHour())) < 0) {
+                                            .concat(" " + recentImageMessage.getHour())) > 0) {
             recentTextMessage.setContentType(1);
 
             return List.of(recentTextMessage);
