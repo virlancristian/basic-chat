@@ -38,13 +38,18 @@
 }
 
 .home-content {
-    height: 100%;
+    height: 85%;
     width: 80%;
 }
 
 .user-inbox {
     background: rgba(17, 27, 33, 0.8);
-    height: 95%;
+    height: 100%;
+}
+
+.conversation-list {
+    height: 85%;
+    overflow-y: auto;
 }
 
 .search-conversation {
@@ -82,4 +87,118 @@
     color: rgba(210, 224, 232, 0.96);
     margin-left: 1%;
     font-size: 1.5vh;
+}
+
+.create-conversation-window-open {
+    background: #259A25;
+    width: 3%;
+    height: 3.5vh;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3vh;
+    font-family: 'Lato';
+    margin-left: 1%;
+}
+
+.create-conversation-window-open:hover {
+    cursor: pointer;
+    color: white;
+}
+
+.create-conversation-form-wrapper {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.5);
+}
+
+.create-conversation-form {
+    position: fixed;
+    background:#36454F;
+    color: white;
+    width: 30%;
+    height: 16vh;
+    border-radius: 10px;
+}
+
+.close-create-conversation-form {
+    float: right;
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 4vh;
+    border-radius: 10px;
+}
+
+.close-create-conversation-form:hover {
+    background: rgba(221, 5, 37, 0.7);
+    cursor: pointer;
+}
+
+.create-conversation-form h3 {
+    font-family: 'Lato';
+    margin: 7% 0 1% 3%;
+}
+
+.search-user {
+    margin: 0 0 4% 3%;
+    width: 70%;
+    height: 3.5vh;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    background: rgba(33, 44, 45, 0.75);
+    color: white;
+    font-family: 'Lato';
+}
+
+.create-conversation-button {
+    background: #259A25;
+    width: 35%;
+    height: 3.5vh;
+    margin: 0 0 1% 3%;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+    font-family: 'Lato';
+}
+
+.create-conversation-button:hover {
+    cursor: pointer;
+    color: white;
+}
+
+@media(max-width: 1000px) {
+    .search-conversation {
+        width: 90%;
+        height: 4vh;
+        margin: 3% 5%;
+    }
+
+    .home-header, .home-content {
+        width: 100%;
+    }
+    
+    .create-conversation-window-open {
+        width: 15%;
+        height: 5vh;
+        margin-left: 5%;
+        margin-bottom: 1%;
+    }
+
+    .create-conversation-form {
+        width: 80%;
+    }
+
+    .create-conversation-button {
+        width: 50%;
+    }
 }
