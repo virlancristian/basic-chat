@@ -18,6 +18,12 @@ public class TextMessageDbEntity extends MessageDbEntity {
 
     public TextMessageDbEntity() {
         super(0);
+        messageId = 0L;
+        receiver = "";
+        sender = "";
+        message = "";
+        date = "";
+        hour = "";
     }
 
     public TextMessageDbEntity(Long conversationId, String receiver, String sender, String message, String date, String hour) {

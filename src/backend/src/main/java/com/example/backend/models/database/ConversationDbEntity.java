@@ -16,7 +16,11 @@ public class ConversationDbEntity {
     @Column(name = "second_participant")
     private String secondParticipant;
 
-    public ConversationDbEntity() {}
+    public ConversationDbEntity() {
+        conversationId = 0L;
+        firstParticipant = "";
+        secondParticipant = "";
+    }
 
     public ConversationDbEntity(String firstParticipant, String secondParticipant) {
         this.firstParticipant = firstParticipant;

@@ -21,6 +21,13 @@ public class SentImageDbEntity extends MessageDbEntity{
 
     public SentImageDbEntity() {
         super(0);
+        imageId = 0L;
+        conversationId = 0L;
+        url = "";
+        receiver = "";
+        sender = "";
+        date = "";
+        hour = "";
     }
 
     public SentImageDbEntity(Long conversationId, String url, String receiver, String sender, String date, String hour) {
@@ -33,13 +40,15 @@ public class SentImageDbEntity extends MessageDbEntity{
         this.hour = hour;
     }
 
-    public SentImageDbEntity(Long imageId, Long conversationId, String url, String receiver, String sender) {
+    public SentImageDbEntity(Long imageId, Long conversationId, String url, String receiver, String sender, String date, String hour) {
         super(2);
         this.imageId = imageId;
         this.conversationId = conversationId;
         this.url = url;
         this.receiver = receiver;
         this.sender = sender;
+        this.date = date;
+        this.hour = hour;
     }
 
     public Long getImageId() {

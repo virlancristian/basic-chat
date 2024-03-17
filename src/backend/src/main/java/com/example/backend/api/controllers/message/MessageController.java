@@ -264,7 +264,7 @@ public class MessageController {
 
         if((recentTextMessage == null && recentImageMessage == null)
                 || (recentTextMessage.getMessageId() == 0 && recentImageMessage.getImageId() == 0)) {
-            return new ArrayList<>();
+            return List.of(new TextMessageDbEntity());
         }
 
         if(recentTextMessage

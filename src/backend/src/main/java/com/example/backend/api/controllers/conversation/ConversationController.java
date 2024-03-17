@@ -75,9 +75,17 @@ public class ConversationController {
     }
 
     private RequestCode verifyAddRequest(String user, String recipient) {
-        UserDbResponse matchingUser = microServiceInvoker.getForObject(USER_MICROSERVICE_API_ENDPOINT + "/" + user, UserDbResponse.class);
-        UserDbResponse matchingRecipient = microServiceInvoker.getForObject(USER_MICROSERVICE_API_ENDPOINT + "/" + recipient, UserDbResponse.class);
-        ConversationDbEntity conversation = conversationDbSevice.getConversationByRecipients(user, recipient);
+        UserDbResponse matchingUser = null;
+        UserDbResponse matchingRecipient = null;
+        ConversationDbEntity conversation = null;
+
+        if(user == null || user.isEmpty() || recipient == null || recipient.isEmpty()) {
+            return RequestCode.NULL_USERNAME;
+        }
+
+        matchingUser = microServiceInvoker.getForObject(USER_MICROSERVICE_API_ENDPOINT + "/" + user, UserDbResponse.class);
+        matchingRecipient = microServiceInvoker.getForObject(USER_MICROSERVICE_API_ENDPOINT + "/" + recipient, UserDbResponse.class);
+        conversation = conversationDbSevice.getConversationByRecipients(user, recipient);
 
         if(matchingUser == null || matchingRecipient == null) {
             return RequestCode.USER_NOT_FOUND;

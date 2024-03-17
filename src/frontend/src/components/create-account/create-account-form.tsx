@@ -1,7 +1,7 @@
 import React, { ChangeEventHandler, KeyboardEventHandler, useState } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 
-import API_RESPONSES from '../cache/api-responses';
+import API_RESPONSES from '../../cache/api-responses';
 
 export default function CreateAccountForm() {
     const BACKEND_SERVER_PORT : string = process.env.REACT_APP_BACKEND_SERVER_PORT || "8080";
