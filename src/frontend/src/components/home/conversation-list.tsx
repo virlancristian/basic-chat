@@ -8,7 +8,7 @@ export default function ConversationList({ inbox, username }: { inbox: Conversat
                 <div className="conversation" key={conversation.conversationId}>
                     <p id='recipient'>{conversation.firstParticipant !== username ? conversation.firstParticipant : conversation.secondParticipant}</p>
                     <p id='message'>{
-                        conversation.message !== undefined
+                        conversation.message !== undefined || conversation.url !== undefined
                         ? (
                             conversation.contentType == 1 
                             ? conversation.message
