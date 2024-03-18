@@ -3,10 +3,11 @@ import Message from '../objects/message';
 import Conversation from '../objects/conversation';
 import { ConversationInbox, compare } from '../objects/conversation-inbox';
 
-export const useConversationsInbox = (username: string): ConversationInbox[] => {
+export const useConversationsInbox = (username: string) => {
     const BACKEND_SERVER_PORT: string = process.env.REACT_APP_BACKEND_SERVER_PORT || "8080";
     const BACKEND_SERVER_URL: string = process.env.REACT_APP_BACKEND_SERVER_URL || `http://localhost:${BACKEND_SERVER_PORT}`;
-    const [inbox, setInbox] = useState<ConversationInbox[]>([])
+    const [visibleInbox, setInbox] = useState<ConversationInbox[]>([]);
+    const [fullInbox, setFullInbox] = useState<ConversationInbox[]>([]);
     
     const fetchInboxMessage = async () => {
         const response: Response = await fetch(`${BACKEND_SERVER_URL}/api/user/${username}/conversation`);
@@ -35,15 +36,19 @@ export const useConversationsInbox = (username: string): ConversationInbox[] => 
             }
 
             inboxArray.sort(compare);
-            setInbox(inboxArray);
+            setFullInbox(inboxArray);
         }
+    }
+
+    const changeInbox = (conversations: ConversationInbox[]) => {
+        setInbox(conversations);
     }
 
     useEffect(() => {
         setInterval(() => {
-            fetchInboxMessage()
+            fetchInboxMessage();
         }, 1000)
     }, []);
 
-    return inbox;
+    return { fullInbox, visibleInbox, changeInbox };
 }
