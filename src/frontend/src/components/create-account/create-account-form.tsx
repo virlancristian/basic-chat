@@ -1,62 +1,21 @@
-import React, { ChangeEventHandler, KeyboardEventHandler, useState } from 'react';
-import { NavigateFunction, useNavigate } from 'react-router-dom';
-
-import API_RESPONSES from '../../cache/api-responses';
+import { useInput } from '../../hooks/use-input';
+import { createAccount } from '../../events/create-account';
+import { checkForKey } from '../../events/key-press';
 
 export default function CreateAccountForm() {
-    const BACKEND_SERVER_PORT : string = process.env.REACT_APP_BACKEND_SERVER_PORT || "8080";
-    const BACKEND_SERVER_URL : string = process.env.REACT_APP_BACKEND_SERVER_URL || `http://localhost:${BACKEND_SERVER_PORT}`;
-
-    const navigate: NavigateFunction = useNavigate();
-    const [body, setBody] = useState({
-        username: '',
-        password: ''
-    });
-
-    const changeRequestBody: ChangeEventHandler = (event : any) => {
-        const {name, value} = event.target;
-
-        setBody((prevBody) => ({
-            ...prevBody,
-            [name]: value
-        }))
-    }
-
-    const verifyKey: KeyboardEventHandler = (event: any) => {
-        if(event.key === 'Enter') {
-            createAccount();
-        }
-    }
-
-    const createAccount: any = async () => {
-        const response: Response = await fetch(`${BACKEND_SERVER_URL}/api/user/add`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        });
-        const data: any = await response.json();
-
-        window.alert(API_RESPONSES[data['validationMessage']]);
-
-        if(response.status === 200) {
-            window.localStorage.setItem('bchat-username', body.username);
-            navigate("/", {});
-        }
-    }
-
+    const { input: username, changeInput: changeUsername } = useInput();
+    const { input: password, changeInput: changePassword } = useInput();
 
     return <div className="create-account-form">
         <div className="username">
             <p>Username</p>
-            <input type="text" className="username-field" name="username" value={body.username} onChange={changeRequestBody}/>
+            <input type="text" className="username-field" name="username" value={username} onChange={changeUsername}/>
         </div>
         <div className="password">
             <p>Password</p>
-            <input type="password" className="password-field" name="password" value={body.password} onChange={changeRequestBody} onKeyUp={verifyKey}/>
+            <input type="password" className="password-field" name="password" value={password} onChange={changePassword} onKeyUp={(event) => checkForKey('Enter', event, createAccount, { account: {username, password}})}/>
         </div>
-        <div className="create-account-button" onClick={createAccount}>
+        <div className="create-account-button" onClick={() => createAccount({username, password})}>
             Create account
         </div>
     </div>

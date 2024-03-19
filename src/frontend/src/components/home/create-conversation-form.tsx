@@ -1,22 +1,17 @@
-import React from "react";
-import { useRecipient } from "../../hooks/use-recipient";
+import { useInput } from "../../hooks/use-input";
+import { createConversation } from "../../events/create-conversation";
+import { checkForKey } from "../../events/key-press";
 
-interface Props {
-    username: string;
-    visible: boolean;
-    setVisibility: () => void;
-}
-
-export default function CreateConversationForm({username, visible, setVisibility}: Props) {
-    const { recipient, changeRecipient } = useRecipient();
+export default function CreateConversationForm({username, visible, setVisibility}: { username: string; visible: boolean; setVisibility: () => void }) {
+    const { input, changeInput } = useInput();
 
     return visible ?
             <div className="create-conversation-form-wrapper">
                 <div className="create-conversation-form">
                     <div className="close-create-conversation-form" onClick={setVisibility}>X</div>
                     <h3>Start a conversation</h3>
-                    <input type="text" className="search-user" placeholder="Search username" onChange={changeRecipient}/>
-                    <div className="create-conversation-button">Start conversation</div>
+                    <input type="text" className="search-user" placeholder="Search username" onChange={changeInput} onKeyDown={(event) => checkForKey('Enter', event, createConversation, {username, input})}/>
+                    <div className="create-conversation-button" onClick={() => createConversation(username, input)}>Start conversation</div>
                 </div>
             </div>
             : <></>

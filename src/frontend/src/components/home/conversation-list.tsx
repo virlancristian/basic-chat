@@ -1,4 +1,3 @@
-import React from "react";
 import { ConversationInbox } from "../../objects/conversation-inbox";
 
 export default function ConversationList({ inbox, username }: { inbox: ConversationInbox[]; username: string }) {
@@ -10,7 +9,7 @@ export default function ConversationList({ inbox, username }: { inbox: Conversat
                     <p id='message'>{
                         conversation.message !== undefined || conversation.url !== undefined
                         ? (
-                            conversation.contentType == 1 
+                            conversation.contentType === 1 
                             ? conversation.message
                             : `Image`
                         ) : <></>

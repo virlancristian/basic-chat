@@ -1,22 +1,24 @@
-import React, { useState, useEffect, ChangeEventHandler, ChangeEvent, KeyboardEventHandler, SetStateAction } from 'react';
+import { useEffect } from 'react';
 import { useConversationsInbox } from '../../hooks/use-conversations-inbox';
-import { ConversationInbox } from '../../objects/conversation-inbox';
 import ConversationList from './conversation-list';
 import CreateConversationWindowOpen from './create-conversation-button';
+import SearchConversation from './search-conversation';
 
-interface Props {
-    setVisibility: () => void;
-};
-
-export default function UserInbox({ setVisibility }: Props) {
+export default function UserInbox({ setVisibility }: { setVisibility: () => void }) {
     const username: string = window.localStorage.getItem('bchat-username') || "";
-    const inbox: ConversationInbox[] = useConversationsInbox(username);
+    const { fullInbox, visibleInbox, changeInbox } = useConversationsInbox(username);
+
+    useEffect(() => {
+        if(fullInbox.length === visibleInbox.length || visibleInbox.length === 0) {
+            changeInbox(fullInbox);
+        }
+    }, [fullInbox]);
 
     return <div className="user-inbox">
         <div className="search-conversation-wrapper">
-            <input type="text" className="search-conversation" name='recipient' placeholder='Search conversation'/>
+            <SearchConversation inbox={fullInbox} changeInbox={changeInbox}/>
             <CreateConversationWindowOpen setVisibility={setVisibility}/>
         </div>
-        <ConversationList inbox={inbox} username={username}/>
+        <ConversationList inbox={visibleInbox} username={username}/>
     </div>
 }

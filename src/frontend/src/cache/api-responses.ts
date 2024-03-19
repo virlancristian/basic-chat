@@ -1,4 +1,4 @@
-const API_RESPONSES: any = {
+const API_RESPONSE_MESSAGES: any = {
     'OK': 'Operation successful!',
     'CONVERSATION_NOT_FOUND': 'The conversation was not found',
     'NULL_IMAGE': 'The sent image is null',
@@ -19,4 +19,4 @@ const API_RESPONSES: any = {
     'INVALID_MESSAGE_TYPE': 'Invalid message type'
 };
 
-export default API_RESPONSES;
+export default API_RESPONSE_MESSAGES;
