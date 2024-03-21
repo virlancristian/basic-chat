@@ -12,6 +12,7 @@ public class TextMessageDbEntity extends MessageDbEntity {
     private Long conversationId;
     private String receiver;
     private String sender;
+    @Lob
     private String message;
     private String date;
     private String hour;
