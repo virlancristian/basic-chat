@@ -1,5 +1,5 @@
 export default interface Conversation {
-    conversationId?: number,
+    conversationId: number,
     firstParticipant: string,
     secondParticipant: string
 };

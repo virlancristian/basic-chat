@@ -1,5 +1,3 @@
-import React from "react";
-
 import CreateAccountForm from "../components/create-account/create-account-form";
 import '../css/create-account.css';
 
