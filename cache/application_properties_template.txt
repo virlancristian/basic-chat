@@ -1,4 +1,4 @@
-spring.datasource.url=jdbc:mysql://localhost:3306/basicchatdb?useSSL=false&allowPublicKeyRetrieval=true
+spring.datasource.url=
 spring.datasource.username=
 spring.datasource.password=
 spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect

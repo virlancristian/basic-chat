@@ -93,8 +93,10 @@ public class App {
         String databaseName = inputReader.getBuildType().equals("deploy") ? "basicchatdb_production" : "basicchatdb_dev";
 
         for(String property:appCache.APPLICATION_PROPERTIES) {
-            if(property.contains("jdbc:mysql://localhost:3306/")) {
-                overwrittenProperties.add("jdbc:mysql://localhost:3306/".concat(databaseName).concat("?useSSL=false&allowPublicKeyRetrieval=true\n"));
+            if(property.contains("spring.datasource.url=")) {
+                overwrittenProperties.add("spring.datasource.url=jdbc:mysql://localhost:3306/"
+                                            .concat(databaseName)
+                                            .concat("?useSSL=false&allowPublicKeyRetrieval=true\n"));
             }
             if(property.contains("spring.datasource.username=")) {
                 overwrittenProperties.add("spring.datasource.username=".concat(username).concat("\n"));

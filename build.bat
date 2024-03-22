@@ -9,15 +9,18 @@ echo Obtaining address...
 
 timeout /nobreak /t 1 > nul
 
-for /f "tokens=2 delims=:" %%a in ('ipconfig ^| find "IPv4 Address"') do (
+for /f "tokens=2 delims=:" %%a in ('ipconfig ^| find /i "IPv4 Address"') do (
     set "ipAddress=%%a"
+    set "ipAddress=!ipAddress:~1!"
+    set "ipAddress=!ipAddress: =!"
+    echo !ipAddress!> local_ip.txt
+    goto :next
 )
+:next
 
-set "ipAddress=!ipAddress:~1!"
+echo Local IP saved to local_ip.txt
 
-echo %ipAddress% > local_ip.txt
-
-echo IP address has been saved to local_ip.txt
+endlocal
 
 cd src/backend
 
