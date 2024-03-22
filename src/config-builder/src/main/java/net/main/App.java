@@ -115,7 +115,7 @@ public class App {
         List<String> frontendProperties = new ArrayList<>();
 
         frontendProperties.add("REACT_APP_BACKEND_SERVER_PORT=".concat(inputReader.getServerPort()).concat("\n"));
-        frontendProperties.add("REACT_APP_BACKEND_SERVER_URL=".concat(inputReader.getServerIp()));
+        frontendProperties.add("REACT_APP_BACKEND_SERVER_URL=".concat(inputReader.isLocal() ? inputReader.getServerIp().concat(":".concat(inputReader.getServerPort())) : inputReader.getServerIp()));
 
         new TextFileOperator("src/frontend/.env").writeAllLines(frontendProperties);
     }
