@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class PageRouterController {
-    @GetMapping(value = {"/", "/home", "/account/create", "/account/login"})
+    @GetMapping(value = {"/", "/home", "/auth", "/create_account", "/login"})
     public String router() {
         return "../static/index";
     }
