@@ -10,50 +10,41 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class App {
-    private int buildPhase;     //1 - initial build phase, 2 - cleaning after build phase
     private InputReader inputReader;
     private AppCache appCache;
     private static String BACKEND_PATH;
-    private static final String MAVEN_DEPENDENCY_RESOLVE_COMMAND = "cmd /c start dependencies.bat";
+    private static final String MAVEN_DEPENDENCY_RESOLVE_COMMAND = "cmd /c start maven_dependencies.bat";
+    private static final String NODE_DEPENDENCY_RESOLVE_COMMAND = "cmd /c start node_dependencies.bat";
+    private static final String MAVEN_PACKAGE_COMMAND = "cmd /c start package.bat";
 
-    public App(int buildPhase) {
-        if(buildPhase != 1 && buildPhase != 2) {
-            throw new IllegalArgumentException("Invalid build phase!");
-        }
-
-        this.buildPhase = buildPhase;
+    public App() {
         inputReader = new InputReader();
         appCache = new AppCache();
         BACKEND_PATH = new TextFileOperator("cache/backend_path.txt").readSingleLine();
     }
 
     public void run() {
-        if(buildPhase == 1) {
-            build();
+        inputReader.readInput();
+
+        createDatabase();
+        initBackendBuild();
+
+        if(inputReader.getBuildType().equals("dev")) {
+            runTerminalCommand(NODE_DEPENDENCY_RESOLVE_COMMAND);
         } else {
-            clean();
+            runTerminalCommand(MAVEN_PACKAGE_COMMAND);
         }
     }
 
-    private void build() {
-        inputReader.readInput();
-        createDatabase();
-        initBackendBuild();
-    }
-
-    private void clean() {
-        File localIp = new File("local_ip.txt");
-
-        localIp.delete();
-    }
-
     private void createDatabase() {
+        String databaseName = inputReader.getBuildType().equals("deploy") ? "basicchatdb_production" : "basicchatdb_dev";
+
         try {
             Process process = Runtime.getRuntime().exec("cmd /c start mysql -hlocalhost -P3306 -u"
                                                         + inputReader.getDbUsername()
             + " -p"
             + inputReader.getDbPassword()
-            + " -e \"CREATE DATABASE basicchatdb\"");
+            + " -e \"CREATE DATABASE " + databaseName + "\"");
             process.waitFor();
         } catch (IOException | InterruptedException error) {
             System.out.println("Error in App::createDatabase - unable to run create database command");
@@ -81,15 +72,15 @@ public class App {
         applicationProperties = overwriteBackendProperties();
 
         new TextFileOperator(BACKEND_PATH + "/src/main/resources/application.properties").writeAllLines(applicationProperties);
-        resolveDependencies();
+        runTerminalCommand(MAVEN_DEPENDENCY_RESOLVE_COMMAND);
     }
 
-    private void resolveDependencies() {
+    private void runTerminalCommand(String command) {
         try {
-            Process process = Runtime.getRuntime().exec(MAVEN_DEPENDENCY_RESOLVE_COMMAND);
+            Process process = Runtime.getRuntime().exec(command);
             process.waitFor();
         } catch (IOException | InterruptedException error) {
-            System.out.println("Error in App::resolveDependencies - failed to resolve maven dependencies");
+            System.out.println("Error in App::resolveDependencies - failed to resolve dependencies");
         }
     }
 
@@ -99,8 +90,12 @@ public class App {
         String password = inputReader.getDbPassword();
         String serverIp = inputReader.getServerIp();
         String serverPort = inputReader.getServerPort();
+        String databaseName = inputReader.getBuildType().equals("deploy") ? "basicchatdb_production" : "basicchatdb_dev";
 
         for(String property:appCache.APPLICATION_PROPERTIES) {
+            if(property.contains("jdbc:mysql://localhost:3306/")) {
+                overwrittenProperties.add("jdbc:mysql://localhost:3306/".concat(databaseName).concat("?useSSL=false&allowPublicKeyRetrieval=true\n"));
+            }
             if(property.contains("spring.datasource.username=")) {
                 overwrittenProperties.add("spring.datasource.username=".concat(username).concat("\n"));
             } else if(property.contains("spring.datasource.password=")) {
