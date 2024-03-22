@@ -44,12 +44,12 @@ public class MessageController {
             messageDbService.addMessage(new TextMessageDbEntity(id,
                                                             messageEntity.getReceiver(),
                                                             messageEntity.getSender(),
-                                                            messageEntity.getContent(),
+                                                            messageEntity.getMessage(),
                                                             messageEntity.getDate(),
                                                             messageEntity.getHour()));
         } else {
             sentImageDbService.addImage(new SentImageDbEntity(id,
-                                                                messageEntity.getContent(),
+                                                                messageEntity.getMessage(),
                                                                 messageEntity.getReceiver(),
                                                                 messageEntity.getSender(),
                                                                 messageEntity.getDate(),
@@ -66,7 +66,7 @@ public class MessageController {
                                                                       @RequestParam(value = "type", required = false) String type,
                                                                       @RequestParam(value = "like", required = false) String alikeMessage) {
         if(verifyGetRequest(id, timestamp, type) != RequestCode.OK) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ArrayList<>());
         }
 
         if(timestamp != null && !timestamp.isEmpty()) {
@@ -96,7 +96,7 @@ public class MessageController {
                                                                  @RequestBody SendMessageRequest messageEntity) {
         TextMessageDbEntity requestedMessage = messageDbService.getSpecificMessage(messageEntity.getSender(),
                                                                                 messageEntity.getReceiver(),
-                                                                                messageEntity.getContent(),
+                                                                                messageEntity.getMessage(),
                                                                                 messageEntity.getDate(),
                                                                                 messageEntity.getHour());
         RequestCode validationMessage = verifyUpdateRequest(requestedMessage, messageEntity.getUpdatedContent());
@@ -118,12 +118,12 @@ public class MessageController {
         MessageDbEntity requestedMessage = messageEntity.getContentType() == 1 ?
                 messageDbService.getSpecificMessage(messageEntity.getSender(),
                                                     messageEntity.getReceiver(),
-                                                    messageEntity.getContent(),
+                                                    messageEntity.getMessage(),
                                                     messageEntity.getDate(),
                                                     messageEntity.getHour()) :
                 sentImageDbService.getSpecificImage(messageEntity.getSender(),
                                                     messageEntity.getReceiver(),
-                                                    messageEntity.getContent(),
+                                                    messageEntity.getMessage(),
                                                     messageEntity.getDate(),
                                                     messageEntity.getHour());
 
@@ -141,10 +141,10 @@ public class MessageController {
     }
 
     private RequestCode verifyAddRequest(Long conversationId, SendMessageRequest messageEntity) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         Date date = new Date();
         Integer contentType = messageEntity.getContentType();
-        String content = messageEntity.getContent();
+        String content = messageEntity.getMessage();
 
         if(!sentImageDbService.conversationExists(conversationId)) {
             return RequestCode.CONVERSATION_NOT_FOUND;
@@ -162,7 +162,7 @@ public class MessageController {
                 .format(date)
                 .compareTo(messageEntity
                         .getDate()
-                        .concat(" " + messageEntity.getHour())) > 0) {
+                        .concat(" " + messageEntity.getHour())) < 0) {
             return RequestCode.INVALID_DATE;
         }
 
@@ -186,7 +186,7 @@ public class MessageController {
     }
 
     private RequestCode verifyGetRequest(Long id, String timestamp, String type) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         Date date = new Date();
 
         if(!sentImageDbService.conversationExists(id)) {
@@ -243,7 +243,7 @@ public class MessageController {
                     .getDate()
                     .concat(" " + textMessagesArray[i].getHour())
                     .compareTo(imagesArray[j].getDate()
-                            .concat(" " + imagesArray[j].getHour())) < 0) {
+                            .concat(" " + imagesArray[j].getHour())) > 0) {
                 textMessagesArray[i].setContentType(1);
                 messages.add(textMessagesArray[i]);
                 i++;

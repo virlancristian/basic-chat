@@ -1,5 +1,5 @@
 export default interface Message {
-    messageId: number,
+    messageId?: number,
     conversationId: number,
     contentType: number,
     message?: string,

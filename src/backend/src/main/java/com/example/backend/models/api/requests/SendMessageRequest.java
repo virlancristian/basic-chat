@@ -2,7 +2,7 @@ package com.example.backend.models.api.requests;
 
 public class SendMessageRequest {
     private Integer contentType;        //1 - text message, 2 - image message
-    private String content;
+    private String message;
     private String sender;
     private String receiver;
     private String date;
@@ -16,7 +16,7 @@ public class SendMessageRequest {
                               String date,
                               String hour,
                               String updatedContent) {
-        this.content = content;
+        this.message = content;
         this.sender = sender;
         this.receiver = receiver;
         this.date = date;
@@ -38,12 +38,12 @@ public class SendMessageRequest {
         }
     }
 
-    public String getContent() {
-        return content;
+    public String getMessage() {
+        return message;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getSender() {
@@ -90,7 +90,7 @@ public class SendMessageRequest {
     public String toString() {
         return "SendMessageRequest{" +
                 "contentType=" + contentType +
-                ", content='" + content + '\'' +
+                ", content='" + message + '\'' +
                 ", sender='" + sender + '\'' +
                 ", receiver='" + receiver + '\'' +
                 ", date='" + date + '\'' +
