@@ -1,0 +1,14 @@
+html, body, #root {
+    height: 100%;
+    margin: 0;
+}
+
+@font-face {
+    font-family: 'Antipasta';
+    src: url(../../assets/fonts/AntipastoPro.ttf);
+}
+
+@font-face {
+    font-family: 'Lato';
+    src: url(../../assets/fonts/Lato.ttf);
+}
