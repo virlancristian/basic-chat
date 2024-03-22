@@ -92,26 +92,19 @@ public class App {
         String serverPort = inputReader.getServerPort();
         String databaseName = inputReader.getBuildType().equals("deploy") ? "basicchatdb_production" : "basicchatdb_dev";
 
+        overwrittenProperties.add("spring.datasource.url=jdbc:mysql://localhost:3306/"
+                .concat(databaseName)
+                .concat("?useSSL=false&allowPublicKeyRetrieval=true\n"));
+        overwrittenProperties.add("spring.datasource.username=".concat(username).concat("\n"));
+        overwrittenProperties.add("spring.datasource.password=".concat(password).concat("\n"));
+        overwrittenProperties.add("server.port=".concat(serverPort).concat("\n"));
+        overwrittenProperties.add("microservice.user.endpoint="
+                .concat(inputReader.isLocal() ? serverIp.concat(":".concat(serverPort)) : serverIp)
+                .concat("/api/user")
+                .concat("\n"));
+
         for(String property:appCache.APPLICATION_PROPERTIES) {
-            if(property.contains("spring.datasource.url=")) {
-                overwrittenProperties.add("spring.datasource.url=jdbc:mysql://localhost:3306/"
-                                            .concat(databaseName)
-                                            .concat("?useSSL=false&allowPublicKeyRetrieval=true\n"));
-            }
-            if(property.contains("spring.datasource.username=")) {
-                overwrittenProperties.add("spring.datasource.username=".concat(username).concat("\n"));
-            } else if(property.contains("spring.datasource.password=")) {
-                overwrittenProperties.add("spring.datasource.password=".concat(password).concat("\n"));
-            } else if(property.contains("server.port=")) {
-                overwrittenProperties.add("server.port=".concat(serverPort).concat("\n"));
-            } else if(property.contains("microservice.user.endpoint=")) {
-                overwrittenProperties.add("microservice.user.endpoint="
-                        .concat(inputReader.isLocal() ? serverIp.concat(":".concat(serverPort)) : serverIp)
-                        .concat("/api/user")
-                        .concat("\n"));
-            } else {
-                overwrittenProperties.add(property.concat("\n"));
-            }
+            overwrittenProperties.add(property.concat("\n"));
         }
 
         return overwrittenProperties;
