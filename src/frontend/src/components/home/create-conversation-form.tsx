@@ -1,7 +1,7 @@
 import { useInput } from "../../hooks/use-input";
 import { createConversation } from "../../events/create-conversation";
 import { checkForKey } from "../../events/key-press";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, KeyboardEvent } from "react";
 import Conversation from "../../objects/conversation";
 
 export default function CreateConversationForm({username, visible, setVisibility, setConversation}: 

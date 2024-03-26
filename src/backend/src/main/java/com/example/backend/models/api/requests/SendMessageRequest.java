@@ -7,7 +7,7 @@ public class SendMessageRequest {
     private String receiver;
     private String date;
     private String hour;
-    private String updatedContent;
+    private String updatedMessage;
 
     public SendMessageRequest(Integer contentType,
                               String content,
@@ -21,7 +21,7 @@ public class SendMessageRequest {
         this.receiver = receiver;
         this.date = date;
         this.hour = hour;
-        this.updatedContent = updatedContent;
+        this.updatedMessage = updatedContent;
 
         if(contentType == 1 || contentType == 2) {
             this.contentType = contentType;
@@ -78,12 +78,12 @@ public class SendMessageRequest {
         this.hour = hour;
     }
 
-    public String getUpdatedContent() {
-        return updatedContent;
+    public String getUpdatedMessage() {
+        return updatedMessage;
     }
 
-    public void setUpdatedContent(String updatedContent) {
-        this.updatedContent = updatedContent;
+    public void setUpdatedMessage(String updatedMessage) {
+        this.updatedMessage = updatedMessage;
     }
 
     @Override
@@ -95,7 +95,7 @@ public class SendMessageRequest {
                 ", receiver='" + receiver + '\'' +
                 ", date='" + date + '\'' +
                 ", hour='" + hour + '\'' +
-                ", updatedContent='" + updatedContent + '\'' +
+                ", updatedContent='" + updatedMessage + '\'' +
                 '}';
     }
 }

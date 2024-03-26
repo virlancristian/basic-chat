@@ -3,6 +3,7 @@ export default interface Message {
     conversationId: number,
     contentType: number,
     message?: string,
+    updatedMessage?: string,
     url?: string,
     receiver: string,
     sender: string,

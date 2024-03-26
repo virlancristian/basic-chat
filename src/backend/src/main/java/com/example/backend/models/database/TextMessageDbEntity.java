@@ -13,6 +13,7 @@ public class TextMessageDbEntity extends MessageDbEntity {
     private String receiver;
     private String sender;
     @Lob
+    @Column(name = "message", length = 65535)
     private String message;
     private String date;
     private String hour;
