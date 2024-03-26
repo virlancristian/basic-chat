@@ -38,7 +38,7 @@ export default function MessageList({ messages, setDeleteWindowVisibility, setDe
                             </p>
                             {
                                 messageId === message.messageId
-                                ? <p className="update-message-button" onClick={() => {updateMessageProcess(message, input, setMessageId)}}>Send</p>
+                                ? <p className="update-message-button" onClick={() => {updateMessageProcess(message, input, setMessageId)}}>Update</p>
                                 : <></>
                             }
                             <p className="hour">{message.hour.substring(0, 5)}</p>
