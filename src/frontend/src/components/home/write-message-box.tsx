@@ -11,10 +11,19 @@ export default function WriteMessageBox({ conversation }: { conversation: Conver
     return <div className="enter-message-box">
         <div className="enter-message-field" contentEditable='true'
             onKeyUp={(event: KeyboardEvent<HTMLDivElement>) => {
+                changeInput(event);
                 checkForKey('Enter', event, sendMessagesProcess, { conversation, username, input, event, changeInput });
-            }}
-            onKeyDown={changeInput}>
+            }}>
         </div>
-        <div className="send-message-button" onClick={() => sendMessage(conversation, username, input)}></div>
+        <div className="send-message-button" onClick={() => {
+                const enterMessageFieldDiv = document.querySelector('.enter-message-field');
+
+                const event: any = {
+                    currentTarget: enterMessageFieldDiv
+                };
+
+                sendMessagesProcess(conversation, username, input, event, changeInput);
+            } 
+        }></div>
     </div>
 }

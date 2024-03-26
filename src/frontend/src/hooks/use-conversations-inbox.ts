@@ -28,7 +28,8 @@ export const useConversationsInbox = (username: string) => {
                         message: message[0].message,
                         url: message[0].url,
                         date: message[0].date,
-                        hour: message[0].hour
+                        hour: message[0].hour,
+                        receiver: message[0].receiver
                     }
 
                     inboxArray = [...inboxArray, newInbox];

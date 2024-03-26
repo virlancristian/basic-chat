@@ -10,7 +10,7 @@ The project uses the following technologies: `React`, `Spring Boot`, `MySQL`
 - [Useful 3rd party docs](#useful-3rd-party-docs)
 
 ## Release notes
-- Click here!
+- [v0.1.0b release notes](https://github.com/virlancristian/basic-chat/releases/tag/release-v0.1.0b)
 
 ## Required 3rd party tools
 - [Node.js v20.8.1](https://nodejs.org/en/blog/release/v20.8.1)
