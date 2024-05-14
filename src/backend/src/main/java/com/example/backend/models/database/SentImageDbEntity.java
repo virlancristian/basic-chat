@@ -13,6 +13,8 @@ public class SentImageDbEntity extends MessageDbEntity{
     @Column(name = "conversation_id")
     private Long conversationId;
 
+    @Column(name = "image_no")
+    private Integer imageNumber;
     private String url;
     private String receiver;
     private String sender;
@@ -23,6 +25,7 @@ public class SentImageDbEntity extends MessageDbEntity{
         super(0);
         imageId = 0L;
         conversationId = 0L;
+        imageNumber = 0;
         url = "";
         receiver = "";
         sender = "";
@@ -30,9 +33,10 @@ public class SentImageDbEntity extends MessageDbEntity{
         hour = "";
     }
 
-    public SentImageDbEntity(Long conversationId, String url, String receiver, String sender, String date, String hour) {
+    public SentImageDbEntity(Long conversationId, Integer imageNumber, String url, String receiver, String sender, String date, String hour) {
         super(2);
         this.conversationId = conversationId;
+        this.imageNumber = imageNumber;
         this.url = url;
         this.receiver = receiver;
         this.sender = sender;
@@ -40,10 +44,11 @@ public class SentImageDbEntity extends MessageDbEntity{
         this.hour = hour;
     }
 
-    public SentImageDbEntity(Long imageId, Long conversationId, String url, String receiver, String sender, String date, String hour) {
+    public SentImageDbEntity(Long imageId, Long conversationId, Integer imageNumber, String url, String receiver, String sender, String date, String hour) {
         super(2);
         this.imageId = imageId;
         this.conversationId = conversationId;
+        this.imageNumber = imageNumber;
         this.url = url;
         this.receiver = receiver;
         this.sender = sender;
@@ -65,6 +70,14 @@ public class SentImageDbEntity extends MessageDbEntity{
 
     public void setConversationId(Long conversationId) {
         this.conversationId = conversationId;
+    }
+
+    public Integer getImageNumber() {
+        return imageNumber;
+    }
+
+    public void setImageNumber(Integer imageNumber) {
+        this.imageNumber = imageNumber;
     }
 
     public String getUrl() {

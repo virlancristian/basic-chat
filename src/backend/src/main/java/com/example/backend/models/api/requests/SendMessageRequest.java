@@ -8,6 +8,7 @@ public class SendMessageRequest {
     private String date;
     private String hour;
     private String updatedMessage;
+    private Integer imageNumber;
 
     public SendMessageRequest(Integer contentType,
                               String content,
@@ -15,13 +16,15 @@ public class SendMessageRequest {
                               String receiver,
                               String date,
                               String hour,
-                              String updatedContent) {
+                              String updatedContent,
+                              Integer imageNumber) {
         this.message = content;
         this.sender = sender;
         this.receiver = receiver;
         this.date = date;
         this.hour = hour;
         this.updatedMessage = updatedContent;
+        this.imageNumber = imageNumber;
 
         if(contentType == 1 || contentType == 2) {
             this.contentType = contentType;
@@ -84,6 +87,14 @@ public class SendMessageRequest {
 
     public void setUpdatedMessage(String updatedMessage) {
         this.updatedMessage = updatedMessage;
+    }
+
+    public Integer getImageNumber() {
+        return imageNumber;
+    }
+
+    public void setImageNumber(Integer imageNumber) {
+        this.imageNumber = imageNumber;
     }
 
     @Override

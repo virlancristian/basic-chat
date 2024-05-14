@@ -35,20 +35,26 @@ public class MessageController {
     public ResponseEntity<ControllerBasicResponse> addMessage(@PathVariable Long id,
                                                               @RequestBody SendMessageRequest messageEntity) {
         RequestCode validationMessage = verifyAddRequest(id, messageEntity);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        Date date = new Date();
+        String dateString;
 
         if(validationMessage != RequestCode.OK) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ControllerBasicResponse("ERROR", validationMessage));
         }
+
+        dateString = dateFormat.format((date));
 
         if(messageEntity.getContentType() == 1) {
             messageDbService.addMessage(new TextMessageDbEntity(id,
                                                             messageEntity.getReceiver(),
                                                             messageEntity.getSender(),
                                                             messageEntity.getMessage(),
-                                                            messageEntity.getDate(),
-                                                            messageEntity.getHour()));
+                                                            dateString.split(" ")[0],
+                                                            dateString.split(" ")[1]));
         } else {
             sentImageDbService.addImage(new SentImageDbEntity(id,
+                                                                messageEntity.getImageNumber(),
                                                                 messageEntity.getMessage(),
                                                                 messageEntity.getReceiver(),
                                                                 messageEntity.getSender(),
@@ -156,14 +162,6 @@ public class MessageController {
 
         if(contentType == 1 && content.length() > 65535) {
             return RequestCode.MESSAGE_TOO_LONG;
-        }
-
-        if(dateFormat
-                .format(date)
-                .compareTo(messageEntity
-                        .getDate()
-                        .concat(" " + messageEntity.getHour())) < 0) {
-            return RequestCode.INVALID_DATE;
         }
 
         return RequestCode.OK;
