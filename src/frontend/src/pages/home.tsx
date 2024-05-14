@@ -14,7 +14,7 @@ export default function Home() {
     const username: string = window.localStorage.getItem('bchat-username') || "";
     const {visible, setVisibility} = useFormVisbility(false);
     const { visible: deleteWindowVisibility, setVisibility: setDeleteWindowVisibility } = useFormVisbility(false);
-    const { messages, conversation, setConversation } = useMessages();
+    const { messages, loadingMessages, setConversation, conversation } = useMessages();
     const [deleteMessage, setDeleteMessage] = useState<Message>({
         conversationId: 0,
         contentType: 0,
@@ -35,7 +35,10 @@ export default function Home() {
             <HomeHeader />
             <div className="home-content">
                 <UserInbox setVisibility={setVisibility} setConversation={setConversation}/>
-                <MessageBox messages={messages} conversation={conversation} setDeleteWindowVisibility={setDeleteWindowVisibility} setDeleteMessage={setDeleteMessage}/>
+                <MessageBox messages={messages} 
+                            conversation={conversation} 
+                            setDeleteWindowVisibility={setDeleteWindowVisibility} 
+                            setDeleteMessage={setDeleteMessage}/>
             </div>
             <CreateConversationForm username={username} visible={visible} setVisibility={setVisibility} setConversation={setConversation}/>
             <DeleteMessageWindow visible={deleteWindowVisibility} message={deleteMessage} setDeleteWindowVisibility={setDeleteWindowVisibility}/>
