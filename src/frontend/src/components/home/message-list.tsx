@@ -22,7 +22,7 @@ export default function MessageList({ messages, conversation, setDeleteWindowVis
                         {
                             message.contentType === 1 ?
                             <p className="other-recipient-message">{message.message}</p> :
-                            <img src={`${message.url}?image_id=${message.imageId}`} id='image-message'/>
+                            <img src={`${message.url}?image_id=${message.imageNumber}`} id='image-message'/>
                         }
                         <p className="hour">{message.hour.substring(0, 5)}</p>
                     </div>
@@ -46,7 +46,7 @@ export default function MessageList({ messages, conversation, setDeleteWindowVis
                                 checkForKey('Enter', event, updateMessageProcess, { message, input, setMessageId });
                             }}>
                                 {message.message}
-                        </p> : <img src={`${message.url}?image_id=${message.imageId}`} id='image-message'/>
+                        </p> : <img src={`${message.url}?image_id=${message.imageNumber}`} id='image-message'/>
                             }
                             {
                                 messageId === message.messageId

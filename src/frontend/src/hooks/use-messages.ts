@@ -31,7 +31,11 @@ export const useMessages = () => {
         const response: Response = await fetch(`${API_URL}/api/conversation/${conversation.conversationId}/message?type=inbox`);
         const data: Message[] = await response.json();
 
-        if(data.length > 0 && data[0].messageId !== messages[messages.length - 1].messageId) {
+        if(data.length > 0 && messages.length > 0 && 
+            (data[0].messageId !== messages[messages.length - 1].messageId ||
+             data[0].contentType !== messages[messages.length - 1].contentType ||
+             data[0].imageId !== messages[messages.length - 1].imageId   
+            )) {
             setMessages((prevMessages) => ([
                 ...prevMessages,
                 data[0]

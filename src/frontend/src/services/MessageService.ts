@@ -18,6 +18,7 @@ async function uploadImage(file: File, conversation: Conversation) {
 
         const body: any = {
             message: `${API_URL}/api/conversation/${conversation.conversationId}/image/${data.fileName}`,
+            imageNumber: data.imageId,
             sender: username,
             receiver: conversation.firstParticipant !== username ? conversation.firstParticipant : conversation.secondParticipant,
             contentType: 2,
