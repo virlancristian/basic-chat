@@ -1,13 +1,17 @@
-import { useState, Dispatch, SetStateAction, KeyboardEvent } from "react";
+import { useState, Dispatch, SetStateAction, KeyboardEvent, useEffect } from "react";
 import Message from "../../objects/message";
 import { useInput } from "../../hooks/use-input";
 import { checkForKey } from "../../events/key-press";
 import { updateMessageProcess } from "../../events/update-message-process";
+import { scrollMessageList } from "../../events/scroll-message-list";
+import { detectTopScroll } from "../../events/detect-top-scroll";
+import Conversation from "../../objects/conversation";
 
-export default function MessageList({ messages, setDeleteWindowVisibility, setDeleteMessage }: { messages: Message[], setDeleteWindowVisibility: () => void, setDeleteMessage: Dispatch<SetStateAction<Message>> }) {
+export default function MessageList({ messages, conversation, setDeleteWindowVisibility, setDeleteMessage }: { messages: Message[], conversation: Conversation, setDeleteWindowVisibility: () => void, setDeleteMessage: Dispatch<SetStateAction<Message>> }) {
     const username: string = window.localStorage.getItem('bchat-username') || ``;
     const { input, changeInput } = useInput();
     const [messageId, setMessageId] = useState<number>(0);
+    const [lastMessageId, setLastMessageId] = useState<number>(0);
 
     return <div className="message-list">
         {
@@ -15,7 +19,11 @@ export default function MessageList({ messages, setDeleteWindowVisibility, setDe
                 message.receiver === username
                     ? <div className="other-recipient-message-box" key={message.messageId}>
                         <p className="other-recipient-username">{message.sender}</p>
-                        <p className="other-recipient-message">{message.message}</p>
+                        {
+                            message.contentType === 1 ?
+                            <p className="other-recipient-message">{message.message}</p> :
+                            <img src={`${message.url}?image_id=${message.imageId}`} id='image-message'/>
+                        }
                         <p className="hour">{message.hour.substring(0, 5)}</p>
                     </div>
                     :
@@ -28,14 +36,18 @@ export default function MessageList({ messages, setDeleteWindowVisibility, setDe
                                     setDeleteWindowVisibility();
                                 }}>Delete</p>
                             </div>
+                            {
+                                message.contentType === 1 ?
+                                
                             <p className="user-recipient-message" 
-                                contentEditable={messageId === message.messageId} 
-                                onKeyUp={(event: KeyboardEvent<HTMLDivElement>) => {
-                                    changeInput(event);
-                                    checkForKey('Enter', event, updateMessageProcess, { message, input, setMessageId });
-                                }}>
-                                    {message.message}
-                            </p>
+                            contentEditable={messageId === message.messageId} 
+                            onKeyUp={(event: KeyboardEvent<HTMLDivElement>) => {
+                                changeInput(event);
+                                checkForKey('Enter', event, updateMessageProcess, { message, input, setMessageId });
+                            }}>
+                                {message.message}
+                        </p> : <img src={`${message.url}?image_id=${message.imageId}`} id='image-message'/>
+                            }
                             {
                                 messageId === message.messageId
                                 ? <p className="update-message-button" onClick={() => {updateMessageProcess(message, input, setMessageId)}}>Update</p>

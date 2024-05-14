@@ -9,7 +9,7 @@ import WriteMessageBox from "./write-message-box";
 export default function MessageBox({ messages, conversation, setDeleteWindowVisibility, setDeleteMessage }: { messages: Message[]; conversation: Conversation, setDeleteWindowVisibility: () => void, setDeleteMessage: Dispatch<SetStateAction<Message>> }) {
     return <div className="message-box">
         <ConversationHeader conversation={conversation} />
-        <MessageList messages={messages} setDeleteWindowVisibility={setDeleteWindowVisibility} setDeleteMessage={setDeleteMessage}/>
+        <MessageList messages={messages} conversation={conversation} setDeleteWindowVisibility={setDeleteWindowVisibility} setDeleteMessage={setDeleteMessage}/>
         <WriteMessageBox conversation={conversation}/>
     </div>
 }

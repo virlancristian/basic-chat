@@ -383,6 +383,15 @@
     margin: 0;
 }
 
+#upload-image-input {
+    visibility: hidden;
+}
+
+#image-message {
+    height: 100px;
+    width: 100%;
+}
+
 @media(max-width: 1000px) {
     .search-conversation {
         width: 90%;

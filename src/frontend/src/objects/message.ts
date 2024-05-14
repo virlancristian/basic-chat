@@ -5,6 +5,7 @@ export default interface Message {
     message?: string,
     updatedMessage?: string,
     url?: string,
+    imageId?: number,
     receiver: string,
     sender: string,
     date: string,
