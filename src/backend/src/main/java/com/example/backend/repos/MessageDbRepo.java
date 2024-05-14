@@ -36,7 +36,7 @@ public interface MessageDbRepo extends JpaRepository<TextMessageDbEntity, Long> 
                                                             @Param("user2") String user2);
     @Query(value = "SELECT *\n" +
                     "FROM messages\n" +
-                    "WHERE conversationId = :conversation_id AND TIMESTAMP(CONCAT(date, ' ',hour)) < :date\n" +
+                    "WHERE conversationId = :conversation_id AND CONCAT(date, ' ',hour) < :date\n" +
                     "ORDER BY date DESC, hour DESC\n" +
                     "LIMIT 100;", nativeQuery = true)
     List<TextMessageDbEntity> getMessagesAfterDateById(@Param("conversation_id") Long conversationId,

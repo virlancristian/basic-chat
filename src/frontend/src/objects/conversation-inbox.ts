@@ -5,7 +5,8 @@ export interface ConversationInbox extends Conversation {
     message?: string
     url?: string
     date: string,
-    hour: string
+    hour: string,
+    receiver: string
 }
 
 export function compare(a: ConversationInbox, b: ConversationInbox): number {

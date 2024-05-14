@@ -1,7 +1,7 @@
 export function getDate(): string {
     const dateObject: Date = new Date();
     const year: number = dateObject.getFullYear();
-    const month: number = dateObject.getMonth();
+    const month: number = dateObject.getMonth() + 1;
     const day: number = dateObject.getDate();
 
     const monthString: string = month < 10 ? `0${month}` : `${month}`;

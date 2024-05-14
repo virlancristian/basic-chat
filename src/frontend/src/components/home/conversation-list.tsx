@@ -11,12 +11,17 @@ export default function ConversationList({ inbox, username, setConversation }: {
                 }}>
                     <p id='recipient'>{conversation.firstParticipant !== username ? conversation.firstParticipant : conversation.secondParticipant}</p>
                     <p id='message'>{
-                        conversation.message !== undefined || conversation.url !== undefined
+                        (
+                            conversation.receiver !== username
+                            ? `You: `
+                            : `${conversation.firstParticipant !== username ? conversation.firstParticipant : conversation.secondParticipant}: `
+                        )
+                         + (conversation.message !== undefined || conversation.url !== undefined
                         ? (
                             conversation.contentType === 1 
                             ? conversation.message
                             : `Image`
-                        ) : <></>
+                        ) : <></>)
                     }</p>
                 </div>
             ))

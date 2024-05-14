@@ -99,13 +99,13 @@ public class MessageController {
                                                                                 messageEntity.getMessage(),
                                                                                 messageEntity.getDate(),
                                                                                 messageEntity.getHour());
-        RequestCode validationMessage = verifyUpdateRequest(requestedMessage, messageEntity.getUpdatedContent());
+        RequestCode validationMessage = verifyUpdateRequest(requestedMessage, messageEntity.getUpdatedMessage());
 
         if(validationMessage != RequestCode.OK) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ControllerBasicResponse("ERROR", validationMessage));
         }
 
-        requestedMessage.setMessage(messageEntity.getUpdatedContent());
+        requestedMessage.setMessage(messageEntity.getUpdatedMessage());
         messageDbService.updateMessage(requestedMessage);
 
         return ResponseEntity.status(HttpStatus.OK).body(new ControllerBasicResponse("SUCCESS", RequestCode.OK));
