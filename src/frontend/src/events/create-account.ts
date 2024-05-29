@@ -3,7 +3,7 @@ import { Account } from "../objects/account";
 import { BasicAPIResponse } from "../objects/basic-api-response";
 import API_RESPONSE_MESSAGES from "../cache/api-responses";
 
-export function createAccount(account: Account): MouseEventHandler<HTMLDivElement> {
+export function createAccount(account: Account): MouseEventHandler<HTMLButtonElement> {
     const requestAccountCreation = async () => {
         const BACKEND_SERVER_PORT: string = process.env.REACT_APP_BACKEND_SERVER_PORT || "8080";
         const BACKEND_SERVER_URL: string = process.env.REACT_APP_BACKEND_SERVER_URL || `http://localhost:${BACKEND_SERVER_PORT}`;

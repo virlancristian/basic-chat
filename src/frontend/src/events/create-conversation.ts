@@ -3,7 +3,7 @@ import { BasicAPIResponse } from '../objects/basic-api-response';
 import API_RESPONSE_MESSAGES from '../cache/api-responses';
 import Conversation from '../objects/conversation';
 
-export function createConversation(firstRecipient: string, secondRecipient: string, setVisibility: () => void, setConversation: Dispatch<SetStateAction<Conversation>>): MouseEventHandler<HTMLDivElement> {
+export function createConversation(firstRecipient: string, secondRecipient: string, setVisibility: () => void, setConversation: Dispatch<SetStateAction<Conversation>>): MouseEventHandler<HTMLButtonElement> {
     const requestConversationCreation = async () => {
         const BACKEND_SERVER_PORT = process.env.REACT_APP_BACKEND_SERVER_PORT || "8080";
         const BACKEND_SERVER_URL = process.env.REACT_APP_BACKEND_SERVER_URL || `http://localhost:${BACKEND_SERVER_PORT}`;
