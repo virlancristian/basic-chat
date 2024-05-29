@@ -1,8 +1,7 @@
 import CreateAccountForm from "../components/create-account/create-account-form";
-import '../css/create-account.css';
 
 export default function CreateAccount() {
-    return <div className="create-account-wrapper">
+    return <div className="bg-black bg-opacity-90 h-screen flex justify-center items-center">
         <CreateAccountForm />
     </div>
 }

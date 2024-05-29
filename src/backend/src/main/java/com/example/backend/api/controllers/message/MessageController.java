@@ -3,6 +3,7 @@ package com.example.backend.api.controllers.message;
 import com.example.backend.api.common.RequestCode;
 import com.example.backend.models.api.requests.SendMessageRequest;
 import com.example.backend.models.api.response.ControllerBasicResponse;
+import com.example.backend.models.api.response.SocketResponse;
 import com.example.backend.models.database.MessageDbEntity;
 import com.example.backend.models.database.TextMessageDbEntity;
 import com.example.backend.models.database.SentImageDbEntity;
@@ -11,7 +12,10 @@ import com.example.backend.services.database.SentImageDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+import org.w3c.dom.Text;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,11 +27,13 @@ import java.util.List;
 public class MessageController {
     private MessageDbService messageDbService;
     private SentImageDbService sentImageDbService;
+    private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
-    public MessageController(MessageDbService messageDbService, SentImageDbService sentImageDbService) {
+    public MessageController(MessageDbService messageDbService, SentImageDbService sentImageDbService, SimpMessagingTemplate messagingTemplate) {
         this.messageDbService = messageDbService;
         this.sentImageDbService = sentImageDbService;
+        this.messagingTemplate = messagingTemplate;
     }
 
     @CrossOrigin
@@ -106,6 +112,7 @@ public class MessageController {
                                                                                 messageEntity.getDate(),
                                                                                 messageEntity.getHour());
         RequestCode validationMessage = verifyUpdateRequest(requestedMessage, messageEntity.getUpdatedMessage());
+        String destination = "/socket/conversation/" + id.toString();
 
         if(validationMessage != RequestCode.OK) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ControllerBasicResponse("ERROR", validationMessage));
@@ -114,12 +121,14 @@ public class MessageController {
         requestedMessage.setMessage(messageEntity.getUpdatedMessage());
         messageDbService.updateMessage(requestedMessage);
 
+        messagingTemplate.convertAndSend(destination, new SocketResponse(requestedMessage.getMessageId(), "edited", requestedMessage.getMessage()));
+
         return ResponseEntity.status(HttpStatus.OK).body(new ControllerBasicResponse("SUCCESS", RequestCode.OK));
     }
 
     @CrossOrigin
     @DeleteMapping("/{id}/message/delete")
-    public ResponseEntity<ControllerBasicResponse> deleteMessage(@PathVariable Long id,
+    public void deleteMessage(@PathVariable Long id,
                                                                  @RequestBody SendMessageRequest messageEntity) {
         MessageDbEntity requestedMessage = messageEntity.getContentType() == 1 ?
                 messageDbService.getSpecificMessage(messageEntity.getSender(),
@@ -132,10 +141,14 @@ public class MessageController {
                                                     messageEntity.getMessage(),
                                                     messageEntity.getDate(),
                                                     messageEntity.getHour());
-
+        String destination = "/socket/conversation/" + id.toString();
+        System.out.println(messageEntity);
         if(requestedMessage == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ControllerBasicResponse("ERROR", RequestCode.MESSAGE_NOT_FOUND));
+            messagingTemplate.convertAndSend(destination, new SocketResponse(-1L, "failed"));
         }
+
+        TextMessageDbEntity foundMessageText = messageEntity.getContentType() == 1 ? (TextMessageDbEntity) requestedMessage : null;
+        SentImageDbEntity foundMessageImage = messageEntity.getContentType() == 2 ? (SentImageDbEntity) requestedMessage : null;
 
         if(messageEntity.getContentType() == 1) {
             messageDbService.deleteMessage((TextMessageDbEntity) requestedMessage);
@@ -143,7 +156,7 @@ public class MessageController {
             sentImageDbService.deleteImage((SentImageDbEntity) requestedMessage);
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(new ControllerBasicResponse("SUCCESS", RequestCode.OK));
+        messagingTemplate.convertAndSend(destination, new SocketResponse(foundMessageText != null ? foundMessageText.getMessageId() : foundMessageImage.getImageId(), "deleted"));
     }
 
     private RequestCode verifyAddRequest(Long conversationId, SendMessageRequest messageEntity) {

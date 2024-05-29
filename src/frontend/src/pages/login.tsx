@@ -1,8 +1,7 @@
 import LoginForm from '../components/login/login-form';
-import '../css/login.css';
 
 export default function Login() {
-    return <div className="login-wrapper">
+    return <div className="bg-black bg-opacity-90 h-screen flex justify-center items-center">
         <LoginForm />
     </div>
 }

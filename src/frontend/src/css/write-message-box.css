@@ -1,0 +1,11 @@
+#write-message-box {
+    display: flex;
+    width: 45vw;
+    border: none;
+    outline: none;
+    min-height: 30px;
+    max-height: 150px;
+    text-wrap: wrap;
+    word-break: break-all;
+    text-align: center;
+}

@@ -46,10 +46,16 @@ export const useConversationsInbox = (username: string) => {
     }
 
     useEffect(() => {
-        setInterval(() => {
-            fetchInboxMessage();
-        }, 1000)
+        const interval = setInterval(fetchInboxMessage, 1000);
+
+        return () => clearInterval(interval);
     }, []);
+
+    useEffect(() => {
+        if(visibleInbox.length === 0 || (visibleInbox.length === fullInbox.length && fullInbox.length > 0)) {
+            setInbox(fullInbox);
+        }
+    }, [fullInbox])
 
     return { fullInbox, visibleInbox, changeInbox };
 }

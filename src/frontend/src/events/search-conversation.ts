@@ -14,4 +14,14 @@ export function searchConversation(recipient: string, inbox: ConversationInbox[]
             return;
         }
     }
+
+    changeInbox([{
+        conversationId: 0,
+        firstParticipant: '',
+        secondParticipant: '',
+        contentType: 0,
+        receiver: '',
+        date: '',
+        hour: ''
+    }]);
 }

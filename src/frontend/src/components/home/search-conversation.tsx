@@ -8,7 +8,7 @@ export default function SearchConversation({ inbox, changeInbox }: { inbox: Conv
 
     return <input 
                 type="text" 
-                className="search-conversation" 
+                className="text-white bg-black bg-opacity-20 rounded-lg m-3 p-1 w-64 outline-none border-none" 
                 name='recipient' 
                 placeholder='Search conversation' 
                 onChange={changeInput} 

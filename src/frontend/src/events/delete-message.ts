@@ -13,7 +13,10 @@ export function deleteMessage(message: Message, closeDeleteWindow: () => void): 
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(message)
+            body: JSON.stringify({
+                ...message,
+                message: message.url !== undefined ? message.url : message.message 
+            })
         })
 
         if(response.status === 200) {

@@ -1,7 +1,5 @@
 import { NavigateFunction, useNavigate } from "react-router-dom";
 
-import '../css/auth.css'
-
 export default function Auth() {
     const navigate : NavigateFunction = useNavigate();
 
